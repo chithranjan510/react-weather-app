@@ -14,25 +14,43 @@ import { GiSunrise } from "react-icons/gi";
 import { GiSunset } from "react-icons/gi";
 import { FaArrowUp } from "react-icons/fa6";
 import { FaArrowDown } from "react-icons/fa6";
+import { getTempBasedOnUnit, getWeatherIconSrc } from "./utility";
 
-const WeatherReport = () => {
+const WeatherReport = ({ data, isMetricUnit }) => {
+  const {
+    localDateAndTime,
+    name: cityName,
+    country,
+    icon,
+    main: weather,
+    temp,
+    localSunrise,
+    localSunset,
+    temp_min,
+    temp_max,
+    humidity,
+    feels_like,
+    speed: windSpeed,
+  } = data;
+
   return (
-    <VStack w="100%" borderRadius="10px" boxShadow="0 0 10px #000" p={10}>
-      <Text fontWeight={200}>
-        Tuesday, 14 february 2023 | Local time: 11:32 PM
+    <VStack w="100%" borderRadius="10px" boxShadow="0 0 10px #000" p={[5, 10]}>
+      <Text fontWeight={200} textAlign="center">
+        {localDateAndTime}
       </Text>
-      <Text fontSize="20px">Mumbai, IN</Text>
+      <Text fontSize="20px">{`${cityName}, ${country}`}</Text>
       <HStack w="100%" justifyContent="space-between" pt={5}>
         <Image
-          src="https://openweathermap.org/img/wn/10d@2x.png"
+          src={getWeatherIconSrc(icon)}
           alt="weather"
+          w={["70px", "100px"]}
         />
         <Box textAlign="center">
-          <Text fontSize="22px" color="#87d6ac">
-            Rain
+          <Text fontSize={["18px", "22px"]} color="#87d6ac">
+            {weather}
           </Text>
-          <Text fontSize="40px" pt={5}>
-            28&#176;
+          <Text fontSize={["30px", "40px"]} pt={5}>
+            {Math.round(getTempBasedOnUnit(temp, isMetricUnit))}°
           </Text>
         </Box>
         <Box>
@@ -41,7 +59,7 @@ const WeatherReport = () => {
             <Text fontWeight={200} fontSize="13px">
               Feels Like:{" "}
               <chakra.span fontWeight={400} fontSize="14px">
-                28&#176;
+                {Math.round(getTempBasedOnUnit(feels_like, isMetricUnit))}°
               </chakra.span>
             </Text>
           </HStack>
@@ -50,7 +68,7 @@ const WeatherReport = () => {
             <Text fontWeight={200} fontSize="13px">
               Humidity:{" "}
               <chakra.span fontWeight={400} fontSize="14px">
-                40%
+                {Math.round(humidity)}%
               </chakra.span>
             </Text>
           </HStack>
@@ -59,7 +77,7 @@ const WeatherReport = () => {
             <Text fontWeight={200} fontSize="13px">
               Wind:{" "}
               <chakra.span fontWeight={400} fontSize="14px">
-                3 m/s
+                {Math.round(windSpeed)} m/s
               </chakra.span>
             </Text>
           </HStack>
@@ -77,7 +95,7 @@ const WeatherReport = () => {
           <Text fontWeight={200} fontSize="14px">
             High:{" "}
             <chakra.span fontWeight={400} fontSize="15px">
-              30&#176;
+              {Math.round(getTempBasedOnUnit(temp_max, isMetricUnit))}°
             </chakra.span>
           </Text>
         </HStack>
@@ -86,25 +104,25 @@ const WeatherReport = () => {
           <Text fontWeight={200} fontSize="14px">
             Low:{" "}
             <chakra.span fontWeight={400} fontSize="15px">
-              26&#176;
+              {Math.round(getTempBasedOnUnit(temp_min, isMetricUnit))}°
             </chakra.span>
           </Text>
         </HStack>
         <HStack>
           <GiSunrise size="25px" />
           <Text fontWeight={200} fontSize="14px">
-            Sunrise:{" "}
+            Rise:{" "}
             <chakra.span fontWeight={400} fontSize="15px">
-              08:00 AM
+              {localSunrise}
             </chakra.span>
           </Text>
         </HStack>
         <HStack>
           <GiSunset size="25px" />
           <Text fontWeight={200} fontSize="14px">
-            Sunset:{" "}
+            Set:{" "}
             <chakra.span fontWeight={400} fontSize="15px">
-              06:00 PM
+              {localSunset}
             </chakra.span>
           </Text>
         </HStack>
