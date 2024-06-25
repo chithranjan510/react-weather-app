@@ -169,25 +169,31 @@ const TopSection = ({
                 bgColor="#fff"
                 overflow="auto"
               >
-                {locationOptions.map((data, index) => {
-                  return (
-                    <Box
-                      key={index}
-                      w="100%"
-                      py={2}
-                      px={2}
-                      color="#000"
-                      _hover={{ bgColor: "blue.400" }}
-                      fontSize="15px"
-                      cursor="pointer"
-                      onClick={() => optionSelectHandler(data)}
-                    >
-                      {data.state
-                        ? `${data.place}, ${data.state}, ${data.country}`
-                        : `${data.place}, ${data.country}`}
-                    </Box>
-                  );
-                })}
+                {locationOptions.length > 0 ? (
+                  locationOptions.map((data, index) => {
+                    return (
+                      <Box
+                        key={index}
+                        w="100%"
+                        py={2}
+                        px={2}
+                        color="#000"
+                        _hover={{ bgColor: "blue.400" }}
+                        fontSize="15px"
+                        cursor="pointer"
+                        onClick={() => optionSelectHandler(data)}
+                      >
+                        {data.state
+                          ? `${data.place}, ${data.state}, ${data.country}`
+                          : `${data.place}, ${data.country}`}
+                      </Box>
+                    );
+                  })
+                ) : (
+                  <Center w="100%" h="200px" color="#000">
+                    No data available
+                  </Center>
+                )}
               </Box>
             )}
             <IconButton
