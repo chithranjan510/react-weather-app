@@ -9,10 +9,11 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { useRef } from "react";
+import { useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { CiLocationOn } from "react-icons/ci";
 import { defaultPlaceOptions, getButtonAndBgColor } from "./utility";
+import { API_KEY } from "./api";
 
 const topButtons = [
   { q: defaultPlaceOptions.Mumbai },
@@ -27,15 +28,19 @@ const TopSection = ({
   isMetricUnit,
   setIsMetricUnit,
   data,
+  setIsloading,
 }) => {
-  const inputRef = useRef();
+  const [inputValue, setInputValue] = useState("");
   const { main: weather, temp } = data;
+  const [locationOptions, setLocationOptions] = useState([]);
 
   const searchHandler = (e) => {
     e.preventDefault();
-    setPlaceQuery({ q: inputRef.current.value });
-    inputRef.current.value = null;
+    setPlaceQuery({ q: inputValue });
+    setIsloading(true);
+    setInputValue("");
   };
+
   const locationHandler = () => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -47,6 +52,33 @@ const TopSection = ({
       (error) => {}
     );
   };
+
+  const optionSelectHandler = (data) => {
+    setPlaceQuery({ lat: data.lat, lon: data.lon });
+    setIsloading(true);
+    setInputValue("");
+  };
+
+  useEffect(() => {
+    if (inputValue === "") {
+      return;
+    }
+
+    fetch(
+      `https://api.openweathermap.org/geo/1.0/direct?q=${inputValue}&limit=5&appid=${API_KEY}`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        const fetchedOptions = data.map((d) => ({
+          place: d.name,
+          lat: d.lat,
+          lon: d.lon,
+          country: d.country,
+          state: d.state,
+        }));
+        setLocationOptions(fetchedOptions);
+      });
+  }, [inputValue]);
 
   return (
     <VStack w="100%" gap={10}>
@@ -103,10 +135,10 @@ const TopSection = ({
         w="100%"
         justifyContent="space-between"
         direction={["column", null, null, "row"]}
-        spacing={[7, 10]}
+        spacing={7}
       >
         <form onSubmit={searchHandler}>
-          <HStack gap={5}>
+          <HStack gap={3} position="relative">
             <Box _active={{ transform: "scale(1.1)" }}>
               <CiLocationOn
                 size="30px"
@@ -115,13 +147,49 @@ const TopSection = ({
               />
             </Box>
             <Input
+              required
               type="text"
               name="search"
-              ref={inputRef}
-              minW={["none", "300px"]}
+              list="locations"
+              value={inputValue}
+              autoComplete="off"
+              onChange={(e) => setInputValue(e.target.value)}
+              minW={["default", "300px"]}
               placeholder="Enter location"
               _placeholder={{ color: "#ffffff80" }}
             />
+            {inputValue !== "" && (
+              <Box
+                position="absolute"
+                w="100%"
+                h="200px"
+                borderRadius="8px"
+                border="2px solid #fff"
+                top="50px"
+                bgColor="#fff"
+                overflow="auto"
+              >
+                {locationOptions.map((data, index) => {
+                  return (
+                    <Box
+                      key={index}
+                      w="100%"
+                      py={2}
+                      px={2}
+                      color="#000"
+                      _hover={{ bgColor: "blue.400" }}
+                      fontSize="15px"
+                      cursor="pointer"
+                      onClick={() => optionSelectHandler(data)}
+                    >
+                      {data.state
+                        ? `${data.place}, ${data.state}, ${data.country}`
+                        : `${data.place}, ${data.country}`}
+                    </Box>
+                  );
+                })}
+              </Box>
+            )}
             <IconButton
               aria-label="search"
               type="submit"
@@ -155,7 +223,11 @@ const TopSection = ({
                 }
                 cursor="pointer"
                 fontSize={["12px", "16px"]}
-                onClick={() => setPlaceQuery(d)}
+                onClick={() => {
+                  setInputValue("");
+                  setPlaceQuery(d);
+                  setIsloading(true);
+                }}
               >
                 {d.q}
               </Text>

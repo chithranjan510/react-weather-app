@@ -38,7 +38,9 @@ const WeatherReport = ({ data, isMetricUnit }) => {
       <Text fontWeight={200} textAlign="center">
         {localDateAndTime}
       </Text>
-      <Text fontSize="20px">{`${cityName}, ${country}`}</Text>
+      <Text fontSize="20px">
+        {country ? `${cityName}, ${country}` : cityName}
+      </Text>
       <HStack w="100%" justifyContent="space-between" pt={5}>
         <Image
           src={getWeatherIconSrc(icon)}

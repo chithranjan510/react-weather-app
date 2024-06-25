@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
 
-const API_KEY = "03dd693441b7152270e9c135d8d62a42";
+export const API_KEY = "03dd693441b7152270e9c135d8d62a42";
 const currentWeatherUrl = "https://api.openweathermap.org/data/2.5/weather";
 const forecastWeatherUrl = "https://api.openweathermap.org/data/2.5/forecast";
 
