@@ -162,7 +162,6 @@ const TopSection = ({
               <Box
                 position="absolute"
                 w="100%"
-                h="200px"
                 borderRadius="8px"
                 border="2px solid #fff"
                 top="50px"
@@ -190,7 +189,7 @@ const TopSection = ({
                     );
                   })
                 ) : (
-                  <Center w="100%" h="200px" color="#000">
+                  <Center w="100%" h="50px" color="#000">
                     No data available
                   </Center>
                 )}
