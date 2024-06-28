@@ -1,3 +1,3 @@
 # Weather app
 
-This weather application is created using `React`, `Chakra UI` and [https://openweathermap.org/] (OpenWeather APIs).
+This weather application is created using `React`, `Chakra UI` and [OpenWeather APIs](https://openweathermap.org/).
