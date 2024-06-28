@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
 
-export const API_KEY = "03dd693441b7152270e9c135d8d62a42";
+export const API_KEY = process.env.REACT_APP_API_KEY;
 const currentWeatherUrl = "https://api.openweathermap.org/data/2.5/weather";
 const forecastWeatherUrl = "https://api.openweathermap.org/data/2.5/forecast";
 
@@ -9,6 +9,7 @@ const getFormattedDateAndTime = (time, offset, format) => {
 };
 
 export const getWeatherDetails = async (searchParams) => {
+
   const url = new URL(currentWeatherUrl);
   url.search = new URLSearchParams({
     ...searchParams,
