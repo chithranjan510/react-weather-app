@@ -13,7 +13,7 @@ export const LoadingSpinner = ({ height, color }) => {
         h={["60px", "80px", "100px"]}
         borderRadius="50%"
         border={[
-          "7px solid #dfdfdf",
+          "7px solid #dfdfdf80",
           "10px solid #dfdfdf80",
           "13px solid #dfdfdf80",
         ]}

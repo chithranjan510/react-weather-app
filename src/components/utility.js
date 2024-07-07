@@ -55,7 +55,7 @@ export const getButtonAndBgColor = (temp, weather) => {
       loaderColor: "#153E75",
       bgGradient: "linear(to-br, blue.600, blue.800)",
     };
-  } else if (weather === weatherOptions.Clear && temp <= 25) {
+  } else if (weather === weatherOptions.Clear && temp > 25) {
     return {
       btnColor: "orange.800",
       loaderColor: "#7B341E",
