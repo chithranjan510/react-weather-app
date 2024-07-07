@@ -44,6 +44,7 @@ const TopSection = ({
   const locationHandler = () => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
+        setIsloading(true);
         setPlaceQuery({
           lon: position.coords.longitude,
           lat: position.coords.latitude,
